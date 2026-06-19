@@ -13,6 +13,7 @@ import { Pagination } from '../../components/Pagination'
 import { StatusBadge } from '../../components/StatusBadge'
 import { getErrorMessage } from '../../lib/api-error'
 import { formatRupiah, formatTanggal } from '../../lib/format'
+import { isActiveLoan } from '../../lib/loan'
 import { KembalikanModal } from './KembalikanModal'
 import { PeminjamanFormModal } from './PeminjamanFormModal'
 
@@ -73,7 +74,7 @@ export function PeminjamanListPage() {
       header: 'Aksi',
       render: (p) => (
         <Group gap="xs">
-          {(p.statusEfektif === 'dipinjam' || p.statusEfektif === 'terlambat') && (
+          {isActiveLoan(p.statusEfektif) && (
             <Button
               size="xs"
               onClick={() => setReturning(p)}

@@ -5,7 +5,8 @@ import { useEffect, useMemo, useState } from 'react'
 import type { PeminjamanDTO } from '@perpustakaan/shared'
 import { usePeminjamanMutations } from '../../api/hooks/usePeminjaman'
 import { getErrorMessage } from '../../lib/api-error'
-import { daysBetween, todayISO } from '../../lib/dates'
+import { todayISO } from '../../lib/dates'
+import { hitungDendaPreview } from '../../lib/fines'
 import { formatRupiah, formatTanggal } from '../../lib/format'
 
 export function KembalikanModal({
@@ -27,7 +28,7 @@ export function KembalikanModal({
   // Mirrors backend lib/fines.ts exactly (FINE-04): preview = max(0, days late) × 1000.
   const denda = useMemo(() => {
     if (!loan) return 0
-    return Math.max(0, daysBetween(loan.tanggalKembaliRencana, tanggal)) * 1000
+    return hitungDendaPreview(loan.tanggalKembaliRencana, tanggal)
   }, [loan, tanggal])
 
   async function onConfirm() {
