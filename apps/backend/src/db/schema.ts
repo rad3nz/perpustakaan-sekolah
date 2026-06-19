@@ -71,9 +71,9 @@ export const peminjaman = mysqlTable(
     bukuId: int('buku_id')
       .notNull()
       .references(() => buku.id),
-    tanggalPinjam: date('tanggal_pinjam').notNull(),
-    tanggalKembaliRencana: date('tanggal_kembali_rencana').notNull(),
-    tanggalKembaliAktual: date('tanggal_kembali_aktual'), // null until returned
+    tanggalPinjam: date('tanggal_pinjam', { mode: 'string' }).notNull(),
+    tanggalKembaliRencana: date('tanggal_kembali_rencana', { mode: 'string' }).notNull(),
+    tanggalKembaliAktual: date('tanggal_kembali_aktual', { mode: 'string' }), // null until returned
     status: mysqlEnum('status', PEMINJAMAN_STATUS).notNull().default('dipinjam'),
     denda: int('denda').notNull().default(0), // IDR, computed on return
     createdAt: timestamp('created_at').notNull().defaultNow(),

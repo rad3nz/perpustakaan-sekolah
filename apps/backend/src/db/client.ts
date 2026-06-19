@@ -7,9 +7,10 @@ import * as schema from './schema'
 // dialect target it unchanged.
 export const pool = mysql.createPool({
   uri: env.DATABASE_URL,
-  // Decode DATE columns as 'YYYY-MM-DD' strings rather than JS Date objects so the
-  // domain date math (fines/overdue) works on ISO strings consistently.
-  dateStrings: true,
+  // Decode DATE columns as 'YYYY-MM-DD' strings (paired with `mode: 'string'` in the
+  // schema) so domain date math (fines/overdue) works on ISO strings consistently.
+  // TIMESTAMP columns are intentionally left as Date objects (Drizzle maps them).
+  dateStrings: ['DATE'],
 })
 
 export const db = drizzle(pool, { schema, mode: 'default' })
