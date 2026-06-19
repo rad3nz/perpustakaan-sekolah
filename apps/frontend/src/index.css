@@ -1,0 +1,54 @@
+/* The single CSS entry. Layer order is load-bearing: `mantine` is declared FIRST so it
+   has the LOWEST priority, letting Tailwind utilities (later layers) win the cascade.
+   See 12-style-guide.md. */
+
+/* 1) Declare the order up front. */
+@layer mantine, theme, base, components, utilities;
+
+/* 2) Mantine's *layered* stylesheets (note `.layer.css`) → into @layer mantine. */
+@import '@mantine/core/styles.layer.css';
+@import '@mantine/dates/styles.layer.css';
+@import '@mantine/notifications/styles.layer.css';
+
+/* 3) Tailwind 4 — its layers were named above, so utilities sort AFTER mantine. */
+@import 'tailwindcss';
+
+/* 4) Brand tokens → Tailwind utilities (bg-brand-600, text-navy-800, border-gold-400…). */
+@theme {
+  --color-brand-50: #fce9ea;
+  --color-brand-100: #f5bcc0;
+  --color-brand-200: #ec9aa1;
+  --color-brand-300: #e0727b;
+  --color-brand-400: #d24e58;
+  --color-brand-500: #a82832;
+  --color-brand-600: #781118; /* canonical maroon */
+  --color-brand-700: #701016;
+  --color-brand-800: #560c11;
+  --color-brand-900: #2d0609;
+
+  --color-navy-50: #eaf4fb;
+  --color-navy-100: #d4e8f6;
+  --color-navy-200: #bfdff3;
+  --color-navy-300: #95cbed;
+  --color-navy-400: #69b4e2;
+  --color-navy-500: #3f8fc0;
+  --color-navy-600: #1d6796;
+  --color-navy-700: #144a6b;
+  --color-navy-800: #0a2434; /* base text */
+  --color-navy-900: #081e2b;
+
+  --color-gold-50: #fbf6e3;
+  --color-gold-100: #f4e9b8;
+  --color-gold-200: #ecdb8c;
+  --color-gold-300: #e3cc60;
+  --color-gold-400: #d6b732; /* nav accent */
+  --color-gold-500: #bda021;
+  --color-gold-600: #9c831b;
+  --color-gold-700: #7a6615;
+  --color-gold-800: #594a0f;
+  --color-gold-900: #382e09;
+}
+
+body {
+  @apply bg-navy-50 text-navy-800;
+}
