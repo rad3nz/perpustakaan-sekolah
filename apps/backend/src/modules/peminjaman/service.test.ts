@@ -103,7 +103,11 @@ test('LOAN-07: tanggal kembali sebelum tanggal pinjam → ValidationError', asyn
   const { repo } = fakeRepo({})
   const svc = new PeminjamanService(repo)
   await expect(
-    svc.createLoan({ ...baseInput, tanggalPinjam: '2026-07-10', tanggalKembaliRencana: '2026-07-01' }),
+    svc.createLoan({
+      ...baseInput,
+      tanggalPinjam: '2026-07-10',
+      tanggalKembaliRencana: '2026-07-01',
+    }),
   ).rejects.toBeInstanceOf(ValidationError)
 })
 

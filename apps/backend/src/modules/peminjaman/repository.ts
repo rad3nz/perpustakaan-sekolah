@@ -1,5 +1,5 @@
-import { and, count, desc, eq, lt, sql, type SQL } from 'drizzle-orm'
 import type { PeminjamanStatusEfektif } from '@perpustakaan/shared'
+import { and, count, desc, eq, lt, type SQL, sql } from 'drizzle-orm'
 import { db } from '../../db/client'
 import { anggota, buku, peminjaman } from '../../db/schema'
 import type { Tx } from '../../db/tx'
@@ -42,10 +42,7 @@ export type PeminjamanListOpts = {
 /** The repository surface the service depends on (so tests can inject a double). */
 export interface PeminjamanRepo {
   transaction<T>(fn: (tx: Tx) => Promise<T>): Promise<T>
-  findBuku(
-    tx: Tx,
-    id: number,
-  ): Promise<{ id: number; stok: number; stokTersedia: number } | null>
+  findBuku(tx: Tx, id: number): Promise<{ id: number; stok: number; stokTersedia: number } | null>
   findAnggota(tx: Tx, id: number): Promise<{ id: number; aktif: boolean } | null>
   hasActiveLoanForPair(tx: Tx, anggotaId: number, bukuId: number): Promise<boolean>
   decrementStok(tx: Tx, bukuId: number): Promise<void>
@@ -152,7 +149,12 @@ export const peminjamanRepo: PeminjamanRepo = {
   },
 
   async findLoanForUpdate(tx, id) {
-    const rows = await tx.select().from(peminjaman).where(eq(peminjaman.id, id)).for('update').limit(1)
+    const rows = await tx
+      .select()
+      .from(peminjaman)
+      .where(eq(peminjaman.id, id))
+      .for('update')
+      .limit(1)
     return rows[0] ?? null
   },
 

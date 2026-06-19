@@ -1,13 +1,13 @@
 import { Button, Group, Title } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
-import { useState } from 'react'
 import type { AnggotaDTO } from '@perpustakaan/shared'
+import { useState } from 'react'
 import { useAnggotaList, useAnggotaMutations } from '../../api/hooks/useAnggota'
 import { type Column, DataTable } from '../../components/DataTable'
 import { Pagination } from '../../components/Pagination'
 import { SearchInput } from '../../components/SearchInput'
-import { cn } from '../../lib/cn'
 import { getErrorMessage } from '../../lib/api-error'
+import { cn } from '../../lib/cn'
 import { AnggotaFormModal } from './AnggotaFormModal'
 
 export function AnggotaListPage() {
@@ -104,9 +104,7 @@ export function AnggotaListPage() {
       </Group>
 
       <DataTable columns={columns} rows={data?.items ?? []} loading={isLoading} />
-      {data && (
-        <Pagination page={page} limit={data.limit} total={data.total} onChange={setPage} />
-      )}
+      {data && <Pagination page={page} limit={data.limit} total={data.total} onChange={setPage} />}
 
       <AnggotaFormModal opened={modalOpen} onClose={() => setModalOpen(false)} anggota={editing} />
     </div>

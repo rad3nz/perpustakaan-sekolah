@@ -6,12 +6,12 @@
 @layer mantine, theme, base, components, utilities;
 
 /* 2) Mantine's *layered* stylesheets (note `.layer.css`) → into @layer mantine. */
-@import '@mantine/core/styles.layer.css';
-@import '@mantine/dates/styles.layer.css';
-@import '@mantine/notifications/styles.layer.css';
+@import "@mantine/core/styles.layer.css";
+@import "@mantine/dates/styles.layer.css";
+@import "@mantine/notifications/styles.layer.css";
 
 /* 3) Tailwind 4 — its layers were named above, so utilities sort AFTER mantine. */
-@import 'tailwindcss';
+@import "tailwindcss";
 
 /* 4) Brand tokens → Tailwind utilities (bg-brand-600, text-navy-800, border-gold-400…). */
 @theme {

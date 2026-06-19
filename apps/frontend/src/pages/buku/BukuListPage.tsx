@@ -1,7 +1,7 @@
 import { Button, Group, Select, Title } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
-import { useState } from 'react'
 import { type BukuDTO, KATEGORI_CONTOH } from '@perpustakaan/shared'
+import { useState } from 'react'
 import { useBukuList, useBukuMutations } from '../../api/hooks/useBuku'
 import { type Column, DataTable } from '../../components/DataTable'
 import { Pagination } from '../../components/Pagination'
@@ -111,9 +111,7 @@ export function BukuListPage() {
       </Group>
 
       <DataTable columns={columns} rows={data?.items ?? []} loading={isLoading} />
-      {data && (
-        <Pagination page={page} limit={data.limit} total={data.total} onChange={setPage} />
-      )}
+      {data && <Pagination page={page} limit={data.limit} total={data.total} onChange={setPage} />}
 
       <BukuFormModal opened={modalOpen} onClose={() => setModalOpen(false)} buku={editing} />
     </div>

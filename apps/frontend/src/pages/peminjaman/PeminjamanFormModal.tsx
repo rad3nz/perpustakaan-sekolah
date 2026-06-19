@@ -10,13 +10,7 @@ import {
 import { getErrorMessage } from '../../lib/api-error'
 import { addDaysISO, todayISO } from '../../lib/dates'
 
-export function PeminjamanFormModal({
-  opened,
-  onClose,
-}: {
-  opened: boolean
-  onClose: () => void
-}) {
+export function PeminjamanFormModal({ opened, onClose }: { opened: boolean; onClose: () => void }) {
   const { create } = usePeminjamanMutations()
   const { data: anggotaOpts } = useAnggotaOptions()
   const { data: bukuOpts } = useBukuOptions()

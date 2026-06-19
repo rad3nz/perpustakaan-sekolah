@@ -1,3 +1,4 @@
+import { PEMINJAMAN_STATUS } from '@perpustakaan/shared'
 import { relations } from 'drizzle-orm'
 import {
   boolean,
@@ -10,7 +11,6 @@ import {
   uniqueIndex,
   varchar,
 } from 'drizzle-orm/mysql-core'
-import { PEMINJAMAN_STATUS } from '@perpustakaan/shared'
 
 // Library staff — backs authentication (login only, no roles). See 04-authentication.md.
 export const users = mysqlTable('users', {

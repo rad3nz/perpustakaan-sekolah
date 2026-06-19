@@ -81,40 +81,57 @@ describe.skipIf(!RUN)('integration', () => {
   })
 
   test('pinjam menurunkan stok, kembalikan memulihkan (transaksional)', async () => {
-    const book = await call('/api/buku', authed({
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ judul: 'Buku Uji', pengarang: 'Penulis', kategori: 'Sains', stok: 2 }),
-    }))
+    const book = await call(
+      '/api/buku',
+      authed({
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          judul: 'Buku Uji',
+          pengarang: 'Penulis',
+          kategori: 'Sains',
+          stok: 2,
+        }),
+      }),
+    )
     expect(book.status).toBe(201)
     const bukuId = book.body.data.id
     expect(book.body.data.stokTersedia).toBe(2)
 
-    const member = await call('/api/anggota', authed({
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ nama: 'Siswa Uji', kelas: '10 A' }),
-    }))
+    const member = await call(
+      '/api/anggota',
+      authed({
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ nama: 'Siswa Uji', kelas: '10 A' }),
+      }),
+    )
     expect(member.status).toBe(201)
     const anggotaId = member.body.data.id
     expect(member.body.data.noAnggota).toBe('LIB-0001')
 
-    const loan = await call('/api/peminjaman', authed({
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ anggotaId, bukuId, tanggalKembaliRencana: '2099-01-01' }),
-    }))
+    const loan = await call(
+      '/api/peminjaman',
+      authed({
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ anggotaId, bukuId, tanggalKembaliRencana: '2099-01-01' }),
+      }),
+    )
     expect(loan.status).toBe(201)
     const loanId = loan.body.data.id
 
     const afterLoan = await call(`/api/buku/${bukuId}`, authed())
     expect(afterLoan.body.data.stokTersedia).toBe(1)
 
-    const ret = await call(`/api/peminjaman/${loanId}/kembalikan`, authed({
-      method: 'PATCH',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ tanggalKembali: '2099-01-01' }),
-    }))
+    const ret = await call(
+      `/api/peminjaman/${loanId}/kembalikan`,
+      authed({
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ tanggalKembali: '2099-01-01' }),
+      }),
+    )
     expect(ret.status).toBe(200)
     expect(ret.body.data.statusEfektif).toBe('dikembalikan')
 
@@ -123,26 +140,35 @@ describe.skipIf(!RUN)('integration', () => {
   })
 
   test('filter status=terlambat hanya mengembalikan yang lewat jatuh tempo', async () => {
-    const book = await call('/api/buku', authed({
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ judul: 'Buku Telat', pengarang: 'P', kategori: 'Fiksi', stok: 1 }),
-    }))
-    const member = await call('/api/anggota', authed({
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ nama: 'Anggota Telat', kelas: '11 B' }),
-    }))
-    await call('/api/peminjaman', authed({
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        anggotaId: member.body.data.id,
-        bukuId: book.body.data.id,
-        tanggalPinjam: '2020-01-01',
-        tanggalKembaliRencana: '2020-01-10',
+    const book = await call(
+      '/api/buku',
+      authed({
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ judul: 'Buku Telat', pengarang: 'P', kategori: 'Fiksi', stok: 1 }),
       }),
-    }))
+    )
+    const member = await call(
+      '/api/anggota',
+      authed({
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ nama: 'Anggota Telat', kelas: '11 B' }),
+      }),
+    )
+    await call(
+      '/api/peminjaman',
+      authed({
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          anggotaId: member.body.data.id,
+          bukuId: book.body.data.id,
+          tanggalPinjam: '2020-01-01',
+          tanggalKembaliRencana: '2020-01-10',
+        }),
+      }),
+    )
 
     const late = await call('/api/peminjaman?status=terlambat', authed())
     expect(late.status).toBe(200)

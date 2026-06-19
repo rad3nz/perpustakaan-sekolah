@@ -1,8 +1,8 @@
 import { Button, Group, Modal, Switch, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
-import { useEffect } from 'react'
 import type { AnggotaDTO } from '@perpustakaan/shared'
+import { useEffect } from 'react'
 import { type AnggotaFormValues, useAnggotaMutations } from '../../api/hooks/useAnggota'
 import { getErrorMessage } from '../../lib/api-error'
 
@@ -62,7 +62,12 @@ export function AnggotaFormModal({
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title={anggota ? 'Edit Anggota' : 'Tambah Anggota'} centered>
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title={anggota ? 'Edit Anggota' : 'Tambah Anggota'}
+      centered
+    >
       <form onSubmit={form.onSubmit(onSubmit)} className="flex flex-col gap-3">
         {anggota && <TextInput label="No. Anggota" value={anggota.noAnggota} readOnly disabled />}
         <TextInput label="Nama" {...form.getInputProps('nama')} />

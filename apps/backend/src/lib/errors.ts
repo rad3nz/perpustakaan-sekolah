@@ -43,9 +43,10 @@ export function formatTypeBoxErrors(error: unknown): Record<string, string[]> {
     for (const e of all) {
       if (!e || typeof e.message !== 'string') continue
       const field = (e.path ?? '').replace(/^\//, '') || '_'
-      ;(out[field] ??= []).push(e.message)
+      const list = out[field] ?? []
+      list.push(e.message)
+      out[field] = list
     }
   }
   return out
 }
-

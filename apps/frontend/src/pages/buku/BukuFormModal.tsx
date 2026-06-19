@@ -1,8 +1,8 @@
 import { Autocomplete, Button, Group, Modal, NumberInput, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
-import { useEffect } from 'react'
 import { type BukuDTO, KATEGORI_CONTOH } from '@perpustakaan/shared'
+import { useEffect } from 'react'
 import { type BukuFormValues, useBukuMutations } from '../../api/hooks/useBuku'
 import { getErrorMessage } from '../../lib/api-error'
 
@@ -91,13 +91,20 @@ export function BukuFormModal({
         <TextInput label="Judul" {...form.getInputProps('judul')} />
         <TextInput label="Pengarang" {...form.getInputProps('pengarang')} />
         <TextInput label="Penerbit" {...form.getInputProps('penerbit')} />
-        <NumberInput label="Tahun Terbit" min={0} max={9999} {...form.getInputProps('tahunTerbit')} />
+        <NumberInput
+          label="Tahun Terbit"
+          min={0}
+          max={9999}
+          {...form.getInputProps('tahunTerbit')}
+        />
         <TextInput label="ISBN" {...form.getInputProps('isbn')} />
-        <Autocomplete label="Kategori" data={[...KATEGORI_CONTOH]} {...form.getInputProps('kategori')} />
+        <Autocomplete
+          label="Kategori"
+          data={[...KATEGORI_CONTOH]}
+          {...form.getInputProps('kategori')}
+        />
         <NumberInput label="Stok" min={0} {...form.getInputProps('stok')} />
-        {buku && (
-          <NumberInput label="Stok Tersedia" value={buku.stokTersedia} readOnly disabled />
-        )}
+        {buku && <NumberInput label="Stok Tersedia" value={buku.stokTersedia} readOnly disabled />}
         <Group justify="flex-end" className="mt-2">
           <Button variant="subtle" onClick={onClose} className="text-navy-700 hover:bg-navy-50">
             Batal

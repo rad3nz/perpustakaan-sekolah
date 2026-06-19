@@ -1,7 +1,7 @@
 import { Button, Group, Select, Title } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
-import { useState } from 'react'
 import type { PeminjamanDTO, PeminjamanStatusEfektif } from '@perpustakaan/shared'
+import { useState } from 'react'
 import {
   useAnggotaOptions,
   useBukuOptions,
@@ -145,9 +145,7 @@ export function PeminjamanListPage() {
       </Group>
 
       <DataTable columns={columns} rows={data?.items ?? []} loading={isLoading} />
-      {data && (
-        <Pagination page={page} limit={data.limit} total={data.total} onChange={setPage} />
-      )}
+      {data && <Pagination page={page} limit={data.limit} total={data.total} onChange={setPage} />}
 
       <PeminjamanFormModal opened={formOpen} onClose={() => setFormOpen(false)} />
       <KembalikanModal

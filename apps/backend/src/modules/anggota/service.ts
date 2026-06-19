@@ -3,7 +3,7 @@ import { db } from '../../db/client'
 import { ConflictError, NotFoundError } from '../../lib/errors'
 import { formatNoAnggota } from '../../lib/member-number'
 import { toAnggotaDTO } from './dto'
-import { anggotaRepo, type AnggotaListOpts } from './repository'
+import { type AnggotaListOpts, anggotaRepo } from './repository'
 
 export type AnggotaInput = {
   nama: string

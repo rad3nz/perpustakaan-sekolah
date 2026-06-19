@@ -1,8 +1,8 @@
 import { MantineProvider } from '@mantine/core'
+import type { PeminjamanDTO } from '@perpustakaan/shared'
 import { render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { expect, test, vi } from 'vitest'
-import type { PeminjamanDTO } from '@perpustakaan/shared'
 import { KembalikanModal } from './KembalikanModal'
 
 // Avoid loading the Eden client; the modal only needs the kembalikan mutation shape.

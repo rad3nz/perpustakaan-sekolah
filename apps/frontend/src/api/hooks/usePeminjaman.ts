@@ -78,7 +78,9 @@ export function useAnggotaOptions() {
   return useQuery({
     queryKey: ['anggota-options'],
     queryFn: async () => {
-      const { data, error } = await api.api.anggota.get({ query: { page: 1, limit: 100, aktif: true } })
+      const { data, error } = await api.api.anggota.get({
+        query: { page: 1, limit: 100, aktif: true },
+      })
       if (error) throw error
       return data.data.items
     },

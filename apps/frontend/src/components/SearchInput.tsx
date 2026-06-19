@@ -1,5 +1,5 @@
 import { TextInput } from '@mantine/core'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /** Debounced (300ms) text input. Emits the committed value to `onChange`. */
 export function SearchInput({
@@ -12,18 +12,18 @@ export function SearchInput({
   placeholder?: string
 }) {
   const [local, setLocal] = useState(value)
+  const onChangeRef = useRef(onChange)
+  onChangeRef.current = onChange
 
   useEffect(() => {
     setLocal(value)
   }, [value])
 
   useEffect(() => {
-    const t = setTimeout(() => {
-      if (local !== value) onChange(local)
-    }, 300)
+    if (local === value) return
+    const t = setTimeout(() => onChangeRef.current(local), 300)
     return () => clearTimeout(t)
-    // biome-ignore lint/correctness/useExhaustiveDependencies: debounce on local only
-  }, [local])
+  }, [local, value])
 
   return (
     <TextInput

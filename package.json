@@ -2,7 +2,10 @@
   "name": "perpustakaan-sekolah",
   "private": true,
   "type": "module",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "lint": "biome check .",
     "format": "biome format --write .",

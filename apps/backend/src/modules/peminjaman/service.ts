@@ -3,11 +3,7 @@ import { todayISO } from '../../lib/dates'
 import { ConflictError, NotFoundError, ValidationError } from '../../lib/errors'
 import { hitungDenda } from '../../lib/fines'
 import { toPeminjamanDTO } from './dto'
-import {
-  peminjamanRepo,
-  type PeminjamanListOpts,
-  type PeminjamanRepo,
-} from './repository'
+import { type PeminjamanListOpts, type PeminjamanRepo, peminjamanRepo } from './repository'
 
 export type CreateLoanInput = {
   anggotaId: number

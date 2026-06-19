@@ -1,7 +1,7 @@
 import type { BukuDTO, Paginated } from '@perpustakaan/shared'
 import { ConflictError, NotFoundError, ValidationError } from '../../lib/errors'
 import { toBukuDTO } from './dto'
-import { bukuRepo, type BukuListOpts } from './repository'
+import { type BukuListOpts, bukuRepo } from './repository'
 
 export type BukuInput = {
   judul: string
