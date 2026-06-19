@@ -34,3 +34,18 @@ export class ConflictError extends AppError {
     super(409, message)
   }
 }
+
+/** Maps an Elysia/TypeBox validation error into field → messages for the envelope. */
+export function formatTypeBoxErrors(error: unknown): Record<string, string[]> {
+  const out: Record<string, string[]> = {}
+  const all = (error as { all?: Array<{ path?: string; message?: string }> }).all
+  if (Array.isArray(all)) {
+    for (const e of all) {
+      if (!e || typeof e.message !== 'string') continue
+      const field = (e.path ?? '').replace(/^\//, '') || '_'
+      ;(out[field] ??= []).push(e.message)
+    }
+  }
+  return out
+}
+

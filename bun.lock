@@ -30,6 +30,7 @@
       "name": "@perpustakaan/shared",
       "version": "0.0.0",
       "devDependencies": {
+        "@perpustakaan/backend": "workspace:*",
         "typescript": "^6.0.3",
       },
     },
