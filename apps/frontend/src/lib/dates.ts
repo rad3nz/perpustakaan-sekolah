@@ -10,3 +10,10 @@ export function daysBetween(a: string, b: string): number {
 export function todayISO(): string {
   return new Date().toISOString().slice(0, 10)
 }
+
+/** ISO date `days` from today (positive = future). */
+export function addDaysISO(days: number): string {
+  const d = new Date()
+  d.setUTCDate(d.getUTCDate() + days)
+  return d.toISOString().slice(0, 10)
+}
