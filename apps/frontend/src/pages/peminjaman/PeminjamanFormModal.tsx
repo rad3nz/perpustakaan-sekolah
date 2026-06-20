@@ -98,15 +98,10 @@ export function PeminjamanFormModal({ opened, onClose }: { opened: boolean; onCl
           </Text>
         )}
         <Group justify="flex-end" className="mt-2">
-          <Button variant="subtle" onClick={onClose} className="text-navy-700 hover:bg-navy-50">
+          <Button variant="default" onClick={onClose}>
             Batal
           </Button>
-          <Button
-            onClick={onSubmit}
-            loading={create.isPending}
-            disabled={rencana < pinjam}
-            className="bg-brand-600 text-white hover:bg-brand-700"
-          >
+          <Button onClick={onSubmit} loading={create.isPending} disabled={rencana < pinjam}>
             Pinjam
           </Button>
         </Group>

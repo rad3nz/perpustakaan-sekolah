@@ -11,6 +11,9 @@ const items = [
 export function Sidebar() {
   return (
     <nav className="flex flex-col gap-1 p-3">
+      <p className="px-3 pt-2 pb-1 font-semibold text-white/40 text-xs uppercase tracking-widest">
+        Menu
+      </p>
       {items.map((it) => (
         <NavLink
           key={it.to}
@@ -18,14 +21,24 @@ export function Sidebar() {
           end={it.end}
           className={({ isActive }) =>
             cn(
-              'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+              'relative flex items-center gap-2.5 rounded-md py-2 pr-3 pl-2.5 font-medium text-sm transition-colors',
               isActive
-                ? 'bg-brand-600 text-gold-400'
-                : 'text-white/80 hover:bg-navy-700 hover:text-white',
+                ? 'bg-brand-600 text-white'
+                : 'text-white/70 hover:bg-white/10 hover:text-white',
             )
           }
         >
-          {it.label}
+          {({ isActive }) => (
+            <>
+              <span
+                className={cn(
+                  'h-4 w-1 rounded-full transition-colors',
+                  isActive ? 'bg-gold-400' : 'bg-transparent',
+                )}
+              />
+              {it.label}
+            </>
+          )}
         </NavLink>
       ))}
     </nav>

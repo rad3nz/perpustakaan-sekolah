@@ -1,11 +1,13 @@
-import { Button, Group, Title } from '@mantine/core'
+import { Button, Group } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import type { AnggotaDTO } from '@perpustakaan/shared'
 import { useState } from 'react'
 import { useAnggotaList, useAnggotaMutations } from '../../api/hooks/useAnggota'
 import { type Column, DataTable } from '../../components/DataTable'
+import { PageHeader } from '../../components/PageHeader'
 import { Pagination } from '../../components/Pagination'
 import { SearchInput } from '../../components/SearchInput'
+import { Surface } from '../../components/Surface'
 import { getErrorMessage } from '../../lib/api-error'
 import { cn } from '../../lib/cn'
 import { AnggotaFormModal } from './AnggotaFormModal'
@@ -30,10 +32,14 @@ export function AnggotaListPage() {
   }
 
   const columns: Column<AnggotaDTO>[] = [
-    { key: 'noAnggota', header: 'No. Anggota', render: (a) => a.noAnggota },
+    {
+      key: 'noAnggota',
+      header: 'No. Anggota',
+      render: (a) => <span className="font-medium tabular-nums">{a.noAnggota}</span>,
+    },
     { key: 'nama', header: 'Nama', render: (a) => a.nama },
     { key: 'kelas', header: 'Kelas', render: (a) => a.kelas },
-    { key: 'telepon', header: 'Telepon', render: (a) => a.telepon ?? '-' },
+    { key: 'telepon', header: 'Telepon', render: (a) => a.telepon ?? '—' },
     {
       key: 'status',
       header: 'Status',
@@ -51,11 +57,12 @@ export function AnggotaListPage() {
     {
       key: 'aksi',
       header: 'Aksi',
+      align: 'right',
       render: (a) => (
-        <Group gap="xs">
+        <Group gap="xs" justify="flex-end" wrap="nowrap">
           <Button
             size="xs"
-            variant="light"
+            variant="default"
             onClick={() => {
               setEditing(a)
               setModalOpen(true)
@@ -63,11 +70,7 @@ export function AnggotaListPage() {
           >
             Edit
           </Button>
-          <Button
-            size="xs"
-            onClick={() => onDelete(a)}
-            className="bg-red-600 text-white hover:bg-red-700"
-          >
+          <Button size="xs" variant="light" color="red" onClick={() => onDelete(a)}>
             Hapus
           </Button>
         </Group>
@@ -77,34 +80,37 @@ export function AnggotaListPage() {
 
   return (
     <div>
-      <Group justify="space-between" className="mb-4">
-        <Title order={2} className="text-navy-800">
-          Anggota
-        </Title>
+      <PageHeader title="Anggota" description="Kelola data anggota perpustakaan.">
         <Button
           onClick={() => {
             setEditing(null)
             setModalOpen(true)
           }}
-          className="bg-brand-600 text-white hover:bg-brand-700"
         >
           Tambah Anggota
         </Button>
-      </Group>
+      </PageHeader>
 
-      <Group className="mb-3">
-        <SearchInput
-          value={search}
-          onChange={(v) => {
-            setSearch(v)
-            setPage(1)
-          }}
-          placeholder="Cari nama atau no. anggota…"
-        />
-      </Group>
+      <Surface p={false}>
+        <div className="flex flex-wrap items-center gap-3 border-navy-100 border-b p-4">
+          <SearchInput
+            value={search}
+            onChange={(v) => {
+              setSearch(v)
+              setPage(1)
+            }}
+            placeholder="Cari nama atau no. anggota…"
+          />
+        </div>
 
-      <DataTable columns={columns} rows={data?.items ?? []} loading={isLoading} />
-      {data && <Pagination page={page} limit={data.limit} total={data.total} onChange={setPage} />}
+        <DataTable columns={columns} rows={data?.items ?? []} loading={isLoading} />
+
+        {data && (
+          <div className="border-navy-100 border-t p-3">
+            <Pagination page={page} limit={data.limit} total={data.total} onChange={setPage} />
+          </div>
+        )}
+      </Surface>
 
       <AnggotaFormModal opened={modalOpen} onClose={() => setModalOpen(false)} anggota={editing} />
     </div>

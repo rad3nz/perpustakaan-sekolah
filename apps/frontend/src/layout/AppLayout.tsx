@@ -22,20 +22,18 @@ export function AppLayout() {
     >
       <AppShell.Header className="border-navy-100 border-b bg-white">
         <Group h="100%" px="md" justify="space-between">
-          <Group>
+          <Group gap="sm">
             <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-            <Text className="font-bold text-navy-800">Perpustakaan Sekolah</Text>
+            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-brand-600 font-bold text-gold-400 text-sm">
+              P
+            </div>
+            <Text className="font-semibold text-navy-800 tracking-tight">Perpustakaan Sekolah</Text>
           </Group>
-          <Group>
-            <Text size="sm" className="text-navy-700">
+          <Group gap="sm">
+            <Text size="sm" className="hidden text-navy-600 sm:block">
               {user?.nama}
             </Text>
-            <Button
-              size="xs"
-              variant="subtle"
-              onClick={handleLogout}
-              className="text-navy-700 hover:bg-navy-50"
-            >
+            <Button size="xs" variant="subtle" color="brand" onClick={handleLogout}>
               Keluar
             </Button>
           </Group>
@@ -45,7 +43,9 @@ export function AppLayout() {
         <Sidebar />
       </AppShell.Navbar>
       <AppShell.Main className="bg-navy-50">
-        <Outlet />
+        <div className="mx-auto w-full max-w-7xl">
+          <Outlet />
+        </div>
       </AppShell.Main>
     </AppShell>
   )

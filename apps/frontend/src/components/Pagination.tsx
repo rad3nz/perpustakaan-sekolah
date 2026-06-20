@@ -13,9 +13,9 @@ export function Pagination({
 }) {
   const pages = Math.max(1, Math.ceil(total / limit))
   return (
-    <Group justify="space-between" className="mt-3">
+    <Group justify="space-between">
       <Text size="sm" className="text-navy-600">
-        Total {total} data
+        {total} data
       </Text>
       <MantinePagination value={page} onChange={onChange} total={pages} size="sm" />
     </Group>

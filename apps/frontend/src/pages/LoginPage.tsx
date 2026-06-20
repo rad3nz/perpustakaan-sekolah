@@ -38,8 +38,11 @@ export function LoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-navy-50 p-4">
-      <Card className="w-full max-w-sm border border-navy-100 bg-white p-6 shadow-md" radius="md">
-        <Title order={2} className="text-navy-800">
+      <Card className="w-full max-w-sm border border-navy-100 bg-white p-6 shadow-md" radius="lg">
+        <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-brand-600 font-bold text-gold-400 text-xl">
+          P
+        </div>
+        <Title order={2} className="text-navy-800 tracking-tight">
           Perpustakaan Sekolah
         </Title>
         <Text size="sm" className="mb-4 text-navy-600">
@@ -53,11 +56,7 @@ export function LoginPage() {
               {error}
             </Text>
           )}
-          <Button
-            type="submit"
-            loading={loading}
-            className="bg-brand-600 text-white hover:bg-brand-700"
-          >
+          <Button type="submit" loading={loading} fullWidth className="mt-1">
             Masuk
           </Button>
         </form>

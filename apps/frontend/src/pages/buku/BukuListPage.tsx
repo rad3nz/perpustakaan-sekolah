@@ -1,12 +1,14 @@
-import { Button, Group, Select, Title } from '@mantine/core'
+import { Button, Group, Select } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { type BukuDTO, KATEGORI_CONTOH } from '@perpustakaan/shared'
 import { useState } from 'react'
 import { useBukuList, useBukuMutations } from '../../api/hooks/useBuku'
 import { type Column, DataTable } from '../../components/DataTable'
+import { PageHeader } from '../../components/PageHeader'
 import { Pagination } from '../../components/Pagination'
 import { SearchInput } from '../../components/SearchInput'
 import { StockBadge } from '../../components/StockBadge'
+import { Surface } from '../../components/Surface'
 import { getErrorMessage } from '../../lib/api-error'
 import { BukuFormModal } from './BukuFormModal'
 
@@ -31,16 +33,25 @@ export function BukuListPage() {
   }
 
   const columns: Column<BukuDTO>[] = [
-    { key: 'judul', header: 'Judul', render: (b) => b.judul },
+    {
+      key: 'judul',
+      header: 'Judul',
+      render: (b) => <span className="font-medium">{b.judul}</span>,
+    },
     { key: 'pengarang', header: 'Pengarang', render: (b) => b.pengarang },
     { key: 'kategori', header: 'Kategori', render: (b) => b.kategori },
-    { key: 'stok', header: 'Stok', render: (b) => b.stok },
+    {
+      key: 'stok',
+      header: 'Stok',
+      align: 'right',
+      render: (b) => <span className="tabular-nums">{b.stok}</span>,
+    },
     {
       key: 'stokTersedia',
       header: 'Tersedia',
       render: (b) => (
-        <Group gap="xs">
-          <span>{b.stokTersedia}</span>
+        <Group gap="xs" wrap="nowrap">
+          <span className="tabular-nums">{b.stokTersedia}</span>
           <StockBadge stok={b.stok} stokTersedia={b.stokTersedia} />
         </Group>
       ),
@@ -48,11 +59,12 @@ export function BukuListPage() {
     {
       key: 'aksi',
       header: 'Aksi',
+      align: 'right',
       render: (b) => (
-        <Group gap="xs">
+        <Group gap="xs" justify="flex-end" wrap="nowrap">
           <Button
             size="xs"
-            variant="light"
+            variant="default"
             onClick={() => {
               setEditing(b)
               setModalOpen(true)
@@ -60,11 +72,7 @@ export function BukuListPage() {
           >
             Edit
           </Button>
-          <Button
-            size="xs"
-            onClick={() => onDelete(b)}
-            className="bg-red-600 text-white hover:bg-red-700"
-          >
+          <Button size="xs" variant="light" color="red" onClick={() => onDelete(b)}>
             Hapus
           </Button>
         </Group>
@@ -74,44 +82,48 @@ export function BukuListPage() {
 
   return (
     <div>
-      <Group justify="space-between" className="mb-4">
-        <Title order={2} className="text-navy-800">
-          Buku
-        </Title>
+      <PageHeader title="Buku" description="Kelola koleksi dan stok buku perpustakaan.">
         <Button
           onClick={() => {
             setEditing(null)
             setModalOpen(true)
           }}
-          className="bg-brand-600 text-white hover:bg-brand-700"
         >
           Tambah Buku
         </Button>
-      </Group>
+      </PageHeader>
 
-      <Group className="mb-3">
-        <SearchInput
-          value={search}
-          onChange={(v) => {
-            setSearch(v)
-            setPage(1)
-          }}
-          placeholder="Cari judul…"
-        />
-        <Select
-          placeholder="Semua kategori"
-          data={[...KATEGORI_CONTOH]}
-          value={kategori}
-          onChange={(v) => {
-            setKategori(v)
-            setPage(1)
-          }}
-          clearable
-        />
-      </Group>
+      <Surface p={false}>
+        <div className="flex flex-wrap items-center gap-3 border-navy-100 border-b p-4">
+          <SearchInput
+            value={search}
+            onChange={(v) => {
+              setSearch(v)
+              setPage(1)
+            }}
+            placeholder="Cari judul…"
+          />
+          <Select
+            placeholder="Semua kategori"
+            data={[...KATEGORI_CONTOH]}
+            value={kategori}
+            onChange={(v) => {
+              setKategori(v)
+              setPage(1)
+            }}
+            clearable
+            className="w-48"
+          />
+        </div>
 
-      <DataTable columns={columns} rows={data?.items ?? []} loading={isLoading} />
-      {data && <Pagination page={page} limit={data.limit} total={data.total} onChange={setPage} />}
+        <DataTable columns={columns} rows={data?.items ?? []} loading={isLoading} />
+
+        {data && (
+          <div className="border-navy-100 border-t p-3">
+            <Pagination page={page} limit={data.limit} total={data.total} onChange={setPage} />
+          </div>
+        )}
+      </Surface>
 
       <BukuFormModal opened={modalOpen} onClose={() => setModalOpen(false)} buku={editing} />
     </div>

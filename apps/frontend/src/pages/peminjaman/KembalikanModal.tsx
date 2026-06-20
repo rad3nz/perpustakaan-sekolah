@@ -60,15 +60,11 @@ export function KembalikanModal({
           <Text className={denda > 0 ? 'font-semibold text-red-600' : 'text-navy-700'}>
             Denda: {formatRupiah(denda)}
           </Text>
-          <Group justify="flex-end">
-            <Button variant="subtle" onClick={onClose} className="text-navy-700 hover:bg-navy-50">
+          <Group justify="flex-end" className="mt-2">
+            <Button variant="default" onClick={onClose}>
               Batal
             </Button>
-            <Button
-              onClick={onConfirm}
-              loading={kembalikan.isPending}
-              className="bg-brand-50 text-brand-700 hover:bg-brand-100"
-            >
+            <Button onClick={onConfirm} loading={kembalikan.isPending}>
               Kembalikan
             </Button>
           </Group>

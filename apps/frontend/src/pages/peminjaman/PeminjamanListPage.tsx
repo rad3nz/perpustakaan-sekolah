@@ -1,4 +1,4 @@
-import { Button, Group, Select, Title } from '@mantine/core'
+import { Button, Group, Select } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import type { PeminjamanDTO, PeminjamanStatusEfektif } from '@perpustakaan/shared'
 import { useState } from 'react'
@@ -9,8 +9,10 @@ import {
   usePeminjamanMutations,
 } from '../../api/hooks/usePeminjaman'
 import { type Column, DataTable } from '../../components/DataTable'
+import { PageHeader } from '../../components/PageHeader'
 import { Pagination } from '../../components/Pagination'
 import { StatusBadge } from '../../components/StatusBadge'
+import { Surface } from '../../components/Surface'
 import { getErrorMessage } from '../../lib/api-error'
 import { formatRupiah, formatTanggal } from '../../lib/format'
 import { isActiveLoan } from '../../lib/loan'
@@ -64,30 +66,29 @@ export function PeminjamanListPage() {
     {
       key: 'denda',
       header: 'Denda',
+      align: 'right',
       render: (p) =>
-        p.statusEfektif === 'terlambat'
-          ? `${formatRupiah(p.dendaProyeksi)} (proyeksi)`
-          : formatRupiah(p.denda),
+        p.statusEfektif === 'terlambat' ? (
+          <span className="tabular-nums text-red-600">
+            {formatRupiah(p.dendaProyeksi)}{' '}
+            <span className="text-navy-400 text-xs">(proyeksi)</span>
+          </span>
+        ) : (
+          <span className="tabular-nums">{formatRupiah(p.denda)}</span>
+        ),
     },
     {
       key: 'aksi',
       header: 'Aksi',
+      align: 'right',
       render: (p) => (
-        <Group gap="xs">
+        <Group gap="xs" justify="flex-end" wrap="nowrap">
           {isActiveLoan(p.statusEfektif) && (
-            <Button
-              size="xs"
-              onClick={() => setReturning(p)}
-              className="bg-brand-50 text-brand-700 hover:bg-brand-100"
-            >
+            <Button size="xs" variant="light" onClick={() => setReturning(p)}>
               Kembalikan
             </Button>
           )}
-          <Button
-            size="xs"
-            onClick={() => onDelete(p)}
-            className="bg-red-600 text-white hover:bg-red-700"
-          >
+          <Button size="xs" variant="light" color="red" onClick={() => onDelete(p)}>
             Hapus
           </Button>
         </Group>
@@ -97,55 +98,57 @@ export function PeminjamanListPage() {
 
   return (
     <div>
-      <Group justify="space-between" className="mb-4">
-        <Title order={2} className="text-navy-800">
-          Peminjaman
-        </Title>
-        <Button
-          onClick={() => setFormOpen(true)}
-          className="bg-brand-600 text-white hover:bg-brand-700"
-        >
-          Tambah Peminjaman
-        </Button>
-      </Group>
+      <PageHeader title="Peminjaman" description="Catat peminjaman dan proses pengembalian buku.">
+        <Button onClick={() => setFormOpen(true)}>Tambah Peminjaman</Button>
+      </PageHeader>
 
-      <Group className="mb-3">
-        <Select
-          placeholder="Semua status"
-          data={STATUS_OPTIONS}
-          value={status}
-          onChange={(v) => {
-            setStatus(v as PeminjamanStatusEfektif | null)
-            setPage(1)
-          }}
-          clearable
-        />
-        <Select
-          placeholder="Semua anggota"
-          data={(anggotaOpts ?? []).map((a) => ({ value: String(a.id), label: a.nama }))}
-          value={anggotaId}
-          onChange={(v) => {
-            setAnggotaId(v)
-            setPage(1)
-          }}
-          searchable
-          clearable
-        />
-        <Select
-          placeholder="Semua buku"
-          data={(bukuOpts ?? []).map((b) => ({ value: String(b.id), label: b.judul }))}
-          value={bukuId}
-          onChange={(v) => {
-            setBukuId(v)
-            setPage(1)
-          }}
-          searchable
-          clearable
-        />
-      </Group>
+      <Surface p={false}>
+        <div className="flex flex-wrap items-center gap-3 border-navy-100 border-b p-4">
+          <Select
+            placeholder="Semua status"
+            data={STATUS_OPTIONS}
+            value={status}
+            onChange={(v) => {
+              setStatus(v as PeminjamanStatusEfektif | null)
+              setPage(1)
+            }}
+            clearable
+            className="w-44"
+          />
+          <Select
+            placeholder="Semua anggota"
+            data={(anggotaOpts ?? []).map((a) => ({ value: String(a.id), label: a.nama }))}
+            value={anggotaId}
+            onChange={(v) => {
+              setAnggotaId(v)
+              setPage(1)
+            }}
+            searchable
+            clearable
+            className="w-56"
+          />
+          <Select
+            placeholder="Semua buku"
+            data={(bukuOpts ?? []).map((b) => ({ value: String(b.id), label: b.judul }))}
+            value={bukuId}
+            onChange={(v) => {
+              setBukuId(v)
+              setPage(1)
+            }}
+            searchable
+            clearable
+            className="w-56"
+          />
+        </div>
 
-      <DataTable columns={columns} rows={data?.items ?? []} loading={isLoading} />
-      {data && <Pagination page={page} limit={data.limit} total={data.total} onChange={setPage} />}
+        <DataTable columns={columns} rows={data?.items ?? []} loading={isLoading} />
+
+        {data && (
+          <div className="border-navy-100 border-t p-3">
+            <Pagination page={page} limit={data.limit} total={data.total} onChange={setPage} />
+          </div>
+        )}
+      </Surface>
 
       <PeminjamanFormModal opened={formOpen} onClose={() => setFormOpen(false)} />
       <KembalikanModal

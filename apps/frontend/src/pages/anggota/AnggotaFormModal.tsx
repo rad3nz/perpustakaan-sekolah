@@ -79,14 +79,10 @@ export function AnggotaFormModal({
           onChange={(e) => form.setFieldValue('aktif', e.currentTarget.checked)}
         />
         <Group justify="flex-end" className="mt-2">
-          <Button variant="subtle" onClick={onClose} className="text-navy-700 hover:bg-navy-50">
+          <Button variant="default" onClick={onClose}>
             Batal
           </Button>
-          <Button
-            type="submit"
-            loading={create.isPending || update.isPending}
-            className="bg-brand-600 text-white hover:bg-brand-700"
-          >
+          <Button type="submit" loading={create.isPending || update.isPending}>
             Simpan
           </Button>
         </Group>

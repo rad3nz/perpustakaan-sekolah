@@ -1,5 +1,6 @@
-import { SimpleGrid, Title } from '@mantine/core'
+import { SimpleGrid } from '@mantine/core'
 import { useDashboard } from '../api/hooks/useDashboard'
+import { PageHeader } from '../components/PageHeader'
 import { StatCard } from '../components/StatCard'
 import { formatRupiah } from '../lib/format'
 
@@ -7,10 +8,8 @@ export function DashboardPage() {
   const { data } = useDashboard()
   return (
     <div>
-      <Title order={2} className="mb-4 text-navy-800">
-        Dashboard
-      </Title>
-      <SimpleGrid cols={{ base: 1, sm: 2, lg: 5 }}>
+      <PageHeader title="Dashboard" description="Ringkasan koleksi, anggota, dan peminjaman." />
+      <SimpleGrid cols={{ base: 1, xs: 2, md: 3, lg: 5 }} spacing="md">
         <StatCard label="Total Buku" value={data?.totalBuku ?? 0} />
         <StatCard label="Total Anggota" value={data?.totalAnggota ?? 0} />
         <StatCard label="Sedang Dipinjam" value={data?.peminjamanAktif ?? 0} />
